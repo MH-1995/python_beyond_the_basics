@@ -1,2 +1,2 @@
 cls
-python ./comprehensions/listcomp_extra.py
+python ./oop/properties.py
