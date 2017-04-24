@@ -89,6 +89,7 @@ StopIteration
 from os.path import dirname, join
 this_directory = dirname(__file__)
 
+
 def fullpath(filename):
     '''Returns the full path of a file in this directory. Allows you to
     run the lab easily in an IDE, or from a different working directory.
@@ -98,8 +99,87 @@ def fullpath(filename):
 # Write your code here:
 
 
+RECORD_FIRST_LINE = 'WARC/1.0'
+
+
+def skip_header(file_handler):
+    """Skips warc file header section.
+
+    :param file_handler: file handler for open warc file
+    """
+    next(file_handler)
+    header = True
+    while header:
+        # Next line reaises StopIteration if there are no
+        # more lines to read
+        line = next(file_handler).rstrip()
+        if line == RECORD_FIRST_LINE:
+            header = False
+
+
+def warc_records(path):
+    """Process warc records and yields each reacord
+
+    :param path: path to the warc file
+    """
+    with open(path) as file_handler:
+        content = True
+        record = {}
+        skip_header(file_handler)
+        while True:
+            line = next(file_handler).rstrip()
+            # if line is empty
+            if not line:
+                content = False
+                continue
+            # if new record
+            elif line == RECORD_FIRST_LINE:
+                content = True
+                record = {}
+            # record metadata
+            elif content:
+                key, value = line.split(': ', 1)
+                record[key] = value
+            # content line
+            else:
+                record['Content'] = line
+                yield record
+
+
+# Aaron Maxwell implementation
+# Version 2: using next(file_handle)
+def warc_records2(path):
+    prev_line = None
+    with open(path) as file_handle:
+        # skip header
+        for line in file_handle:
+            if (prev_line == "\n" and line == "\n"):
+                break
+            prev_line = line
+        # read records
+        while True:
+            record = {}
+            line = next(file_handle)
+            # skip metadata header
+            assert line == 'WARC/1.0\n', line
+            # read metadata
+            line = next(file_handle)
+            while line != "\n":
+                assert line != ""
+                key, value = line.rstrip('\n').split(": ", 1)
+                record[key] = value
+                line = next(file_handle)
+            # read content
+            assert 'Content' not in record
+            record['Content'] = next(file_handle).rstrip('\n')
+            # produce value
+            yield record
+            # skip next blank line
+            line = next(file_handle)
+            assert line == '\n', line
 
 # Do not edit any code below this line!
+
 
 if __name__ == '__main__':
     import doctest

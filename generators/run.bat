@@ -1,2 +1,2 @@
 cls
-python adapter.py
+python adapter_extra.py
