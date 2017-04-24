@@ -1,2 +1,2 @@
 cls
-python ./oop/properties.py
+python ./oop/properties_extra.py

@@ -57,6 +57,31 @@ AttributeError: can't set attribute
 # Write your code here:
 
 
+class Resistor:
+    def __init__(self, resistance, voltage):
+        self._resistance = resistance
+        self.voltage = voltage
+
+    @property
+    def resistance(self):
+        return self._resistance
+
+    @property
+    def current(self):
+        return self.voltage / self.resistance
+
+    @current.setter
+    def current(self, new_current):
+        self.voltage = new_current * self.resistance
+
+    @property
+    def current_in_milliamps(self):
+        return self.current * 10**3
+
+    @current_in_milliamps.setter
+    def current_in_milliamps(self, new_milliamps):
+        self.current = new_milliamps * 10**-3
+
 
 # Do not edit any code below this line!
 
