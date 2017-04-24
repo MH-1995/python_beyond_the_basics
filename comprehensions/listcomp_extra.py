@@ -69,10 +69,9 @@ garments = ['hat', 'belt', 'bell bottoms', 'cape', 'trench coat']
 # Write your code here:
 
 
-pairs = [(x, y) for x in range(3) for y in range(2)]
-
-colors = ['aquamarine', 'orange', 'teal', 'cyan']
-garments = ['hat', 'belt', 'bell bottoms', 'cape', 'trench coat']
+pairs = [(x, y)
+         for x in range(3)
+         for y in range(2)]
 
 combos = [color + ' ' + garment
           for color in colors
