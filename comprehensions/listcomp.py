@@ -67,7 +67,10 @@ def palindromes(words):
 
 
 def starting_with(letter, words):
-    return [s for s in words if s[0].lower() == letter.lower()]
+    return [
+        word for word in words
+        if word.lower().startswith(letter.lower())
+    ]
 
 
 # Do not edit any code below this line!
