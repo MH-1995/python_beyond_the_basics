@@ -1,3 +1,8 @@
+'''
+Observer pattern lab
+"Lab: Watching a File Change Size"
+'''
+
 import sys
 import os
 import argparse
@@ -24,10 +29,10 @@ class FileWatcher:
                 print(f'Unhandled error: {sys.exc_info()[0]}')
 
     def check_file(self):
-        file_size_current = os.stat(args.file).st_size
-        if file_size_current != self.file_size_stored:
-            self.dispatch(file_size_current)
-            self.file_size_stored = file_size_current
+        current_file_size = os.stat(args.file).st_size
+        if current_file_size != self.file_size_stored:
+            self.file_size_stored = current_file_size
+            self.dispatch(current_file_size)
 
     def register(self, who):
         self.subscribers.add(who)
@@ -65,3 +70,7 @@ if __name__ == '__main__':
     pub.register(john)
 
     pub.watch()
+
+    pub.unregister(bob)
+    pub.unregister(stacy)
+    pub.unregister(john)
